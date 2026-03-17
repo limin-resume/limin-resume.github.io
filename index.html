@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李敏 (Helen) | 运营求职主页</title>
+    <style>
+        /* 森系主题配色 */
+        :root {
+            --primary-green: #388e3c; 
+            --light-green: #e8f5e9; 
+            --hover-green: #4caf50; 
+            --bg-color: #f1f8f4; 
+            --text-main: #333333;
+            --text-light: #666666;
+        }
+
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-color); margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        /* 语言切换按钮 (固定在右上角) */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 2px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.95em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .lang-switch:hover { background: var(--primary-green); color: #fff; }
+
+        /* 头部样式 */
+        header { background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%); padding: 40px 20px; border-radius: 16px; box-shadow: 0 8px 25px rgba(76, 175, 80, 0.1); text-align: center; margin-bottom: 30px; border-top: 5px solid var(--primary-green); }
+        .avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        h1 { margin: 0; color: var(--primary-green); font-size: 2.2em; }
+        .subtitle { color: var(--hover-green); font-size: 1.1em; font-weight: bold; margin: 10px 0; }
+        .contact-info { color: var(--text-light); font-size: 0.9em; margin-bottom: 15px; }
+        
+        /* 模块样式 */
+        section { background-color: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 30px; }
+        h2 { border-bottom: 3px solid var(--primary-green); padding-bottom: 10px; color: var(--primary-green); display: inline-block; margin-top: 0; }
+        
+        /* 交互卡片样式 */
+        .card { border: 1px solid #e1e8ed; border-radius: 12px; margin-bottom: 15px; overflow: hidden; transition: all 0.3s ease; }
+        .card:hover { box-shadow: 0 6px 15px rgba(76, 175, 80, 0.15); border-color: var(--primary-green); }
+        
+        .card-header { padding: 20px; background-color: #fafbfc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { margin: 0; color: #2c3e50; font-size: 1.1em; }
+        .toggle-icon { font-size: 1.2em; color: var(--primary-green); transition: transform 0.3s ease; }
+        
+        .card-content { padding: 0 20px; max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s ease-in-out; background-color: #fff; }
+        .card.active .card-content { padding: 20px; max-height: 2500px; opacity: 1; border-top: 1px solid #e1e8ed; }
+        .card.active .toggle-icon { transform: rotate(180deg); }
+        
+        .highlight { color: var(--primary-green); font-weight: bold; }
+        
+        /* 照片画廊排版 */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; margin-bottom: 15px;}
+        .gallery img { width: 100%; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s ease; object-fit: cover; cursor: zoom-in; }
+        .gallery img:hover { transform: scale(1.03); } 
+        
+        .portfolio-img { width: 100%; max-width: 500px; border-radius: 8px; border: 1px solid #eee; margin-top: 15px; margin-bottom: 15px; display: block; cursor: zoom-in; }
+        .tag { display: inline-block; background: var(--light-green); padding: 6px 14px; border-radius: 20px; font-size: 0.85em; margin: 0 8px 10px 0; color: var(--primary-green); font-weight: bold; }
+
+        .action-btn { display: inline-block; background-color: var(--light-green); color: var(--primary-green); padding: 6px 15px; border-radius: 6px; text-decoration: none; font-size: 0.9em; font-weight: bold; border: 1px solid #c8e6c9; transition: all 0.2s; margin-top: 10px; margin-right: 10px; }
+        .action-btn:hover { background-color: var(--primary-green); color: #fff; }
+
+        /* 图片放大弹窗样式 */
+        .modal { display: none; position: fixed; z-index: 9999; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal-content { margin: auto; display: block; max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); object-fit: contain; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from {transform:scale(0.8); opacity:0} to {transform:scale(1); opacity:1} }
+        .close-btn { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #bbb; }
+    </style>
+</head>
+<body>
+
+<button id="lang-btn" class="lang-switch" onclick="toggleLanguage()">🌐 <b>中</b> / EN</button>
+
+<div id="content-zh" class="container">
+    <header>
+        <img src="avatar.png" alt="李敏的头像" class="avatar">
+        <h1>李 敏 (Helen)</h1>
+        <div class="subtitle">新媒体运营 / 产品运营 / 项目统筹</div>
+        <div class="contact-info">
+            👩‍💼 女 | 🎂 2002.10 | 📞 135-2418-0212 | ✉️ 2370986999@qq.com
+        </div>
+    </header>
+
+    <section>
+        <h2>💼 实习经历 (点击展开详情与作品)</h2>
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>上海保险交易所 | 综合/市场拓展条线运营</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 2025.07 - 2025.10</p>
+                <p><strong>内容运营与宣发：</strong>累计产出 26篇 业务内容，发布 10篇 推文（含 2篇原创），为《中国银行保险报》提供 3篇 预热底稿。</p>
+                <p><strong>全流程会务保障：</strong>输出 37份 会议合同，完成 10版 会议手册校对并自主生成二维码，全流程保障再保大会落地。</p>
+                <p><strong>资源统筹与SOP优化：</strong>建立标准沟通流程，联系 91家 机构完成 ASIFMA 问卷 <span class="highlight">100% 采集</span>。</p>
+                
+                <a href="https://mp.weixin.qq.com/s/112RLLFX5WkBNVv5hxig3Q" target="_blank" class="action-btn" onclick="event.stopPropagation()">🔗 活力中国调研行报道</a>
+                <a href="https://mp.weixin.qq.com/s/pKarIw0faRVmdW7QmPCYfA" target="_blank" class="action-btn" onclick="event.stopPropagation()">🔗 十件大事评选推文</a>
+                
+                <div class="gallery">
+                    <img src="data1.png" alt="阅读量数据截图" class="zoomable">
+                    <img src="reinsurance1.png" alt="再保险大会现场图1" class="zoomable">
+                    <img src="reinsurance2.png" alt="再保险大会现场图2" class="zoomable">
+                    <img src="reinsurance3.png" alt="再保险大会现场图3" class="zoomable">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>上海人工智能研究院 | 法务助理 (产品运营向)</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 2024.06 - 2024.09</p>
+                <p><strong>需求分析与体验优化：</strong>收集分析 1500余份 用户反馈，提出 10条 优化建议并被采纳，推动系统用户满意度 <span class="highlight">提升 15%</span>。</p>
+                <p><strong>流程协同增效：</strong>通过梳理智能合同审查系统流程节点及优化路径，使系统使用效率 <span class="highlight">提升 20%</span>。</p>
+                <p><strong>文档与翻译支持：</strong>校对 23份 专利合同，确保通过率 100%；完成上海九院医学指南翻译，准确率达 98% 以上。</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>上海译国译民翻译有限公司 | 笔译译员</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 2023.06 - 2023.09</p>
+                <p><strong>技术提效与规模化交付：</strong>运用 OCR、ABBYY、Regex 等工具进行文本预处理，提升处理速度 30%。利用翻译技术工具精准处理超 <span class="highlight">10万字</span> 商务及技术文本，获客户 98% 认可度。</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🚀 核心项目经历</h2>
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>E职有你工作室 & 海聚英才开放日</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p><strong>新媒体运营 (E职有你)：</strong>通过创新互动设计使单篇阅读量平均 <span class="highlight">提升 40%</span>；实现全校 80% 以上学生覆盖，就业信息触达人数增加 3倍。</p>
+                <p><strong>活动统筹 (海聚英才)：</strong>接待数十家政企投机构并统筹路演，获《澎湃新闻》官方报道。</p>
+                <a href="https://www.thepaper.cn/newsDetail_forward_30683474" target="_blank" class="action-btn" onclick="event.stopPropagation()">📰 《澎湃新闻》官方报道</a>
+                <div class="gallery">
+                    <img src="data2.png" alt="粉丝增长数据" class="zoomable">
+                    <img src="haiju1.png" alt="海聚英才路演现场" class="zoomable">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>大创项目“ME语料库” | 第一作者 / 技术核心</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 2024.05 - 2025.05</p>
+                <p><strong>NLP流程自动化：</strong>基于语步模型细致标注清洗文本，微调 AI Prompt 实现特征识别自动化，<span class="highlight">人效提升 50%</span>。</p>
+                <p><strong>数据清洗与处理：</strong>利用 Python 对 1000+ 篇原始语料进行特征提取与清洗，剔除 30% 噪声数据；打通机器翻译到译后编辑全链路，流转效率提高 40%。</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎓 教育背景</h2>
+        <div>
+            <span class="tag">上海电机学院 | 英语 (本科)</span>
+            <span class="tag">华东政法大学 | 法学 (跨校辅修)</span>
+            <span class="tag">上海电机学院 | 人工智能 (微专业)</span>
+        </div>
+        <p style="color: var(--text-light); font-size: 0.9em; margin-top: 15px;">
+            <strong>核心课程：</strong>英语视听说(89)、运筹学(94)、经济法学(88)、法律文书(92)、Python程序设计、深度学习<br>
+            <strong>所获荣誉：</strong>2024年玉海棠学业一等奖学金、2025年中国国际大学生创新大赛校级一等奖
+        </p>
+    </section>
+
+    <section>
+        <h2>🛠️ 技能、证书及其他</h2>
+        <p><strong>专业硬技能：</strong></p>
+        <p>
+            <span class="tag">Python (数据清洗)</span> <span class="tag">SPSS/VLOOKUP</span> 
+            <span class="tag">Regex</span> <span class="tag">甘特图</span> <span class="tag">135/秀米排版</span>
+        </p>
+        <p><strong>语言与证书：</strong></p>
+        <p>
+            <span class="tag">英语 (TEM4 / 商务)</span> <span class="tag">法语</span> 
+            <span class="tag">西班牙语</span> <span class="tag">粤语 (商务)</span>
+        </p>
+        <p style="color: var(--text-light); font-size: 0.9em;"><strong>个人爱好：</strong>网球、乒乓球、羽毛球</p>
+    </section>
+</div>
+<div id="content-en" class="container" style="display: none;">
+    <header>
+        <img src="avatar.png" alt="Helen Li Avatar" class="avatar">
+        <h1>Helen Li</h1>
+        <div class="subtitle">New Media Operations / Product Operations / Project Coordinator</div>
+        <div class="contact-info">
+            👩‍💼 Female | 🎂 Oct 2002 | 📞 (+86) 135-2418-0212 | ✉️ 2370986999@qq.com
+        </div>
+    </header>
+
+    <section>
+        <h2>💼 Internship Experience (Click to expand)</h2>
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>Shanghai Insurance Exchange | Operations</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 Jul 2025 - Oct 2025</p>
+                <p><strong>Content Operations:</strong> Produced 26 high-quality business articles, published 10 WeChat posts (including 2 original), and provided 3 promotional drafts for <em>China Banking and Insurance News</em>.</p>
+                <p><strong>Event Coordination:</strong> Ensured the full-process execution of the International Reinsurance Conference. Drafted 37 contracts, proofread 10 versions of the conference manual, and independently generated QR codes.</p>
+                <p><strong>Resource & SOP:</strong> Established standard communication processes, contacting 91 institutions to achieve <span class="highlight">100% collection</span> of ASIFMA questionnaires.</p>
+                
+                <a href="https://mp.weixin.qq.com/s/112RLLFX5WkBNVv5hxig3Q" target="_blank" class="action-btn" onclick="event.stopPropagation()">🔗 Conference Report</a>
+                <a href="https://mp.weixin.qq.com/s/pKarIw0faRVmdW7QmPCYfA" target="_blank" class="action-btn" onclick="event.stopPropagation()">🔗 Top 10 Events Post</a>
+                
+                <div class="gallery">
+                    <img src="data1.png" alt="Data" class="zoomable">
+                    <img src="reinsurance1.png" alt="Conference 1" class="zoomable">
+                    <img src="reinsurance2.png" alt="Conference 2" class="zoomable">
+                    <img src="reinsurance3.png" alt="Conference 3" class="zoomable">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>Shanghai AI Research Institute | Legal Assistant (Product Ops)</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 Jun 2024 - Sep 2024</p>
+                <p><strong>Requirement Analysis:</strong> Collected and analyzed over 1,500 user feedbacks, proposed 10 adopted optimization suggestions, boosting system user satisfaction by <span class="highlight">15%</span>.</p>
+                <p><strong>Process Coordination:</strong> Streamlined the workflow of the intelligent contract review system, increasing usage efficiency by <span class="highlight">20%</span>.</p>
+                <p><strong>Documentation & Translation:</strong> Proofread 23 patent contracts with a 100% pass rate; translated medical guidelines for Shanghai Ninth People's Hospital with over 98% accuracy.</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>Shanghai YGYM Translation Co., Ltd. | Translator</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 Jun 2023 - Sep 2023</p>
+                <p><strong>Tech-Driven Delivery:</strong> Utilized OCR, ABBYY, and Regex for text preprocessing, increasing speed by 30%. Processed over <span class="highlight">100,000 words</span> of business/tech documents with a 98% client approval rate.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🚀 Core Projects</h2>
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>E-Career Studio & Haiju Talents Open Day</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p><strong>New Media Operations (E-Career):</strong> Boosted average views per post by <span class="highlight">40%</span> via interactive design; covered >80% of students and increased job info reach by 3 times.</p>
+                <p><strong>Event Coordination (Haiju):</strong> Received dozens of institutions and coordinated roadshows, officially reported by <em>The Paper</em>.</p>
+                <a href="https://www.thepaper.cn/newsDetail_forward_30683474" target="_blank" class="action-btn" onclick="event.stopPropagation()">📰 <em>The Paper</em> Report</a>
+                <div class="gallery">
+                    <img src="data2.png" alt="Data" class="zoomable">
+                    <img src="haiju1.png" alt="Event" class="zoomable">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>"ME Corpus" Innovation Project | Core Tech & 1st Author</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <p>📅 May 2024 - May 2025</p>
+                <p><strong>NLP Process Automation:</strong> Annotated texts based on Move Analysis, fine-tuned AI Prompts for automated feature recognition, increasing human efficiency by <span class="highlight">50%</span>.</p>
+                <p><strong>Data Cleaning:</strong> Used Python to extract and clean 1000+ raw texts, removing 30% noise data; integrated MT to PEMT workflow, improving overall efficiency by 40%.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎓 Education</h2>
+        <div>
+            <span class="tag">Shanghai Dianji University | English (Bachelor)</span>
+            <span class="tag">ECUPL | Law (Cross-school Minor)</span>
+            <span class="tag">Shanghai Dianji University | AI (Micro-major)</span>
+        </div>
+        <p style="color: var(--text-light); font-size: 0.9em; margin-top: 15px;">
+            <strong>Core Courses:</strong> Operations Research (94), Economic Law (88), Legal Documents (92), Python Programming, Deep Learning.<br>
+            <strong>Honors:</strong> 2024 Yu Haitang 1st-Class Scholarship, 2025 China International College Students' Innovation Competition (1st Prize).
+        </p>
+    </section>
+
+    <section>
+        <h2>🛠️ Skills & Others</h2>
+        <p><strong>Hard Skills:</strong></p>
+        <p>
+            <span class="tag">Python (Data Cleaning)</span> <span class="tag">SPSS/VLOOKUP</span> 
+            <span class="tag">Regex</span> <span class="tag">Gantt Chart</span> <span class="tag">Xiumi Editor</span>
+        </p>
+        <p><strong>Languages:</strong></p>
+        <p>
+            <span class="tag">English (TEM4 / Business)</span> <span class="tag">French</span> 
+            <span class="tag">Spanish</span> <span class="tag">Cantonese (Business)</span>
+        </p>
+        <p style="color: var(--text-light); font-size: 0.9em;"><strong>Hobbies:</strong> Tennis, Table Tennis, Badminton</p>
+    </section>
+</div>
+<div id="imageModal" class="modal">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="expandedImg">
+</div>
+
+<script>
+    // 1. 中英文切换功能
+    let isEnglish = false;
+    function toggleLanguage() {
+        isEnglish = !isEnglish;
+        const btn = document.getElementById('lang-btn');
+        const zhContent = document.getElementById('content-zh');
+        const enContent = document.getElementById('content-en');
+        
+        if(isEnglish) {
+            zhContent.style.display = 'none';
+            enContent.style.display = 'block';
+            btn.innerHTML = '🌐 中 / <b>EN</b>';
+            document.title = "Helen Li | Operations Portfolio";
+        } else {
+            zhContent.style.display = 'block';
+            enContent.style.display = 'none';
+            btn.innerHTML = '🌐 <b>中</b> / EN';
+            document.title = "李敏 (Helen) | 运营求职主页";
+        }
+    }
+
+    // 2. 卡片折叠与展开功能 (全局生效)
+    function toggleCard(element) {
+        let allCards = document.querySelectorAll('.card');
+        allCards.forEach(card => {
+            if (card !== element) {
+                card.classList.remove('active');
+            }
+        });
+        element.classList.toggle('active');
+    }
+
+    // 3. 图片放大功能 (全局生效)
+    let modal = document.getElementById("imageModal");
+    let modalImg = document.getElementById("expandedImg");
+    let images = document.querySelectorAll(".zoomable");
+
+    images.forEach(img => {
+        img.onclick = function(event) {
+            event.stopPropagation();
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        }
+    });
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    modal.onclick = function(event) {
+        if(event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>
